@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">500px downloader</string>
+    <string name="parsing_url">Parsing url...</string>
+    <string name="save_img_done">Save image done</string>
+    <string name="cannot_download_img">Can not download image</string>
+    <string name="invalid_url">Invalid 500px url</string>
+    <string name="no_storage_permission">Without storage permission</string>
+    <string name="get_html_null">Get html error</string>
+    <string name="parser_html_null">Parser html error</string>
+</resources>

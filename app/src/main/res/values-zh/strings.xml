@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">500px图片下载</string>
+    <string name="parsing_url">解析url中...</string>
+    <string name="save_img_done">保存图片成功</string>
+    <string name="cannot_download_img">下载图片出错</string>
+    <string name="invalid_url">无效的500px url</string>
+    <string name="no_storage_permission">未赋予存储权限</string>
+    <string name="get_html_null">获取网页源码失败</string>
+    <string name="parser_html_null">解析图片url失败</string>
+</resources>
