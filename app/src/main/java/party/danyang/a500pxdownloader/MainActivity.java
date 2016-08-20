@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -35,7 +36,7 @@ public class MainActivity extends Activity {
             finish();
             return;
         }
-        getUrl(originUrl.replace(ORIGIN_URL_PREFIX, ""));
+        getUrl(originUrl.replace(ORIGIN_URL_PREFIX, "").split("/")[0]);
     }
 
     private void getUrl(final String code) {

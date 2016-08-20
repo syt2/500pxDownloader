@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:background="@android:color/white"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="party.danyang.a500pxdownloader.MainActivity">
@@ -18,11 +18,11 @@
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle" />
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:layout_marginTop="48dp"
         style="@style/AVLoadingIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginTop="48dp"
         app:indicatorColor="#FF4081"
         app:indicatorName="BallPulseIndicator" />
 </RelativeLayout>
