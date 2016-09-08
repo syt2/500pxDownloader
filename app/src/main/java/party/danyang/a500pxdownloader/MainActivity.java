@@ -1,20 +1,13 @@
 package party.danyang.a500pxdownloader;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions.RxPermissions;
-
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
@@ -40,20 +33,7 @@ public class MainActivity extends Activity {
     }
 
     private void getUrl(final String code) {
-        Observable.just(null)
-                .compose(RxPermissions.getInstance(this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                .flatMap(new Func1<Boolean, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(Boolean aBoolean) {
-                        if (aBoolean) {
-                            return Api.loadHtml(code);
-                        } else {
-                            Toast.makeText(MainActivity.this, R.string.no_storage_permission, Toast.LENGTH_LONG).show();
-                            finish();
-                            return null;
-                        }
-                    }
-                })
+        Api.loadHtml(code)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -86,5 +66,51 @@ public class MainActivity extends Activity {
                         startService(intent);
                     }
                 });
+//        Observable.just(null)
+//                .compose(RxPermissions.getInstance(this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+//                .flatMap(new Func1<Boolean, Observable<String>>() {
+//                    @Override
+//                    public Observable<String> call(Boolean aBoolean) {
+//                        if (aBoolean) {
+//                            return Api.loadHtml(code);
+//                        } else {
+//                            Toast.makeText(MainActivity.this, R.string.no_storage_permission, Toast.LENGTH_LONG).show();
+//                            finish();
+//                            return null;
+//                        }
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<String>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        finish();
+//                        unsubscribe();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+//                        finish();
+//                        unsubscribe();
+//                    }
+//
+//                    @Override
+//                    public void onNext(String s) {
+//                        if (TextUtils.isEmpty(s)) {
+//                            onError(new Exception(getString(R.string.get_html_null)));
+//                        }
+//                        String url = ContenParser.parser(s);
+//                        if (TextUtils.isEmpty(url)) {
+//                            onError(new Exception(getString(R.string.parser_html_null)));
+//                        }
+//                        Intent intent = new Intent(MainActivity.this, DownloadService.class);
+//                        intent.putExtra(DownloadService.INTENT_NAME, code);
+//                        intent.putExtra(DownloadService.INTENT_URL, url);
+//                        startService(intent);
+//                    }
+//                });
     }
 }
