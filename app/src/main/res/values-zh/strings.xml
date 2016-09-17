@@ -13,4 +13,5 @@
         如果您不幸遇到了，请将路径改为内置存储中的路径。</string>
     <string name="settings_download">下载</string>
     <string name="settings_custom_downloadpath">自定义下载路径</string>
+    <string name="download_from_mirror">从国内镜像下载</string>
 </resources>

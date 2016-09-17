@@ -13,4 +13,5 @@
         , if it occurs, change this directory to internal storage.</string>
     <string name="settings_download">Download</string>
     <string name="settings_custom_downloadpath">Custom download file path</string>
+    <string name="download_from_mirror">Download images from mirror(For China)</string>
 </resources>

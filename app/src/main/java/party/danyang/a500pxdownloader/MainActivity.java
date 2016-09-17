@@ -52,6 +52,10 @@ public class MainActivity extends Activity {
                             onFailure(call, new Exception(getString(R.string.parser_html_null)));
                             return;
                         }
+                        if (PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                .getBoolean(SettingsActivity.PREF_DOWNLOAD_FROM_MIRROR, false)) {
+                            url = url.replace("https://drscdn.500px.org/photo/", "http://odn6f51j0.qnssl.com/");
+                        }
 
                         final String path = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                                 .getString(SettingsActivity.PREF_PATH, "");

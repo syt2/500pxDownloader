@@ -4,7 +4,7 @@ Save images in 500px
 
 
 ##Download
-[V 1.1.1](app/app-release.apk)  
+[V 1.1.2](app/app-release.apk)  
 
 
 ##ScreenShot
@@ -12,6 +12,11 @@ Save images in 500px
 
 
 ##ChangeLog
+v1.1.2  
+* 添加从镜像下载，大陆用户如果下载速度过慢可考虑开启
+* add option that download images from mirror. helpful for users in China.
+
+
 v1.1.1  
 * 所有下载行为全部采用系统下载器下载
 * change to system download manager actions for all downloads 

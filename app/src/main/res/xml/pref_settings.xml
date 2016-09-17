@@ -6,14 +6,18 @@
         android:key="ket_download"
         android:title="@string/settings_download">
         <EditTextPreference
-            android:dialogMessage="@string/path_msg"
             android:capitalize="words"
+            android:dialogMessage="@string/path_msg"
             android:inputType="text"
             android:key="key_path_under_21"
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/settings_custom_downloadpath" />
+
+        <SwitchPreference
+            android:key="key_download_from_mirror"
+            android:title="@string/download_from_mirror" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="其他">

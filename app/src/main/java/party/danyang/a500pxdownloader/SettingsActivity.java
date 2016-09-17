@@ -20,7 +20,7 @@ import rx.functions.Action1;
 public class SettingsActivity extends PreferenceActivity {
 
     public static final String PREF_PATH = "key_path_under_21";
-
+    public static final String PREF_DOWNLOAD_FROM_MIRROR = "key_download_from_mirror";
 
     SharedPreferences prefs;
 
