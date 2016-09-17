@@ -20,8 +20,6 @@ import rx.functions.Action1;
 public class SettingsActivity extends PreferenceActivity {
 
     public static final String PREF_PATH = "key_path_under_21";
-    public static final String PREF_SUCCESS_NOTIFICATION = "key_show_notification";
-    public static final String PREF_FAILED_NOTIFICATION = "key_show_failed_notification";
 
 
     SharedPreferences prefs;
@@ -54,26 +52,6 @@ public class SettingsActivity extends PreferenceActivity {
             prefs.edit().putString(PREF_PATH, getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath()).commit();
         }
         setSummary(PREF_PATH, prefs.getString(PREF_PATH, ""));
-        setSummary(PREF_SUCCESS_NOTIFICATION, getResources().getStringArray(R.array.pref_notification_titles)
-                [Integer.valueOf(prefs.getString(PREF_SUCCESS_NOTIFICATION, "0"))]);
-        setSummary(PREF_FAILED_NOTIFICATION, getResources().getStringArray(R.array.pref_notification_titles)
-                [Integer.valueOf(prefs.getString(PREF_FAILED_NOTIFICATION, "0"))]);
-        findPreference(PREF_SUCCESS_NOTIFICATION).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                setSummary(PREF_SUCCESS_NOTIFICATION, getResources().getStringArray(R.array.pref_notification_titles)
-                        [Integer.valueOf(o.toString())]);
-                return true;
-            }
-        });
-        findPreference(PREF_FAILED_NOTIFICATION).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                setSummary(PREF_FAILED_NOTIFICATION, getResources().getStringArray(R.array.pref_notification_titles)
-                        [Integer.valueOf(o.toString())]);
-                return true;
-            }
-        });
         findPreference(PREF_PATH).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {

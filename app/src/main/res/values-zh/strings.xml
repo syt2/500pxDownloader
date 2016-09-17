@@ -1,23 +1,16 @@
 <resources>
     <string name="app_name">500px图片下载</string>
     <string name="parsing_url">解析url中...</string>
-    <string name="save_img_done">保存图片成功</string>
-    <string name="cannot_download_img">下载图片出错</string>
     <string name="invalid_url">无效的500px url</string>
     <string name="no_storage_permission">未赋予存储权限</string>
     <string name="get_html_null">获取网页源码失败</string>
     <string name="parser_html_null">解析图片url失败</string>
     <string name="title_activity_settings">设置</string>
     <string name="unknown_error">未知错误</string>
-    <string name="retry">重试</string>
     <string name="download_in_cache">无法取得存储权限，图片将只能保存在本应用私有文件夹下</string>
     <string name="load_dir_error">创建文件夹失败</string>
     <string name="path_msg">在5.0以上的机型中，可能会出现不能保存到外置sd卡的情况，
         如果您不幸遇到了，请将路径改为内置存储中的路径。</string>
-
-    <string-array name="pref_notification_titles">
-        <item>Toast</item>
-        <item>通知</item>
-        <item>浮动通知</item>
-    </string-array>
+    <string name="settings_download">下载</string>
+    <string name="settings_custom_downloadpath">自定义下载路径</string>
 </resources>

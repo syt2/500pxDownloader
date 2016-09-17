@@ -4,7 +4,7 @@
 
     <PreferenceCategory
         android:key="ket_download"
-        android:title="下载">
+        android:title="@string/settings_download">
         <EditTextPreference
             android:dialogMessage="@string/path_msg"
             android:capitalize="words"
@@ -13,23 +13,7 @@
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="自定义下载路径" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="通知">
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/pref_notification_titles"
-            android:entryValues="@array/pref_notification_values"
-            android:key="key_show_notification"
-            android:title="下载完成后提醒方式" />
-
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/pref_notification_titles"
-            android:entryValues="@array/pref_notification_values"
-            android:key="key_show_failed_notification"
-            android:title="下载出错后提醒方式" />
+            android:title="@string/settings_custom_downloadpath" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="其他">

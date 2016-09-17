@@ -1,14 +1,20 @@
 package party.danyang.a500pxdownloader;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import com.tbruyelle.rxpermissions.RxPermissions;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends Activity {
 
@@ -34,83 +40,48 @@ public class MainActivity extends Activity {
 
     private void getUrl(final String code) {
         Api.loadHtml(code)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .enqueue(new Callback<String>() {
                     @Override
-                    public void onCompleted() {
-                        finish();
-                        unsubscribe();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        finish();
-                        unsubscribe();
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        if (TextUtils.isEmpty(s)) {
-                            onError(new Exception(getString(R.string.get_html_null)));
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response == null || TextUtils.isEmpty(response.body())) {
+                            onFailure(call, new Exception(getString(R.string.get_html_null)));
+                            return;
                         }
-                        String url = ContenParser.parser(s);
+                        String url = ContenParser.parser(response.body());
                         if (TextUtils.isEmpty(url)) {
-                            onError(new Exception(getString(R.string.parser_html_null)));
+                            onFailure(call, new Exception(getString(R.string.parser_html_null)));
+                            return;
                         }
-                        Intent intent = new Intent(MainActivity.this, DownloadService.class);
-                        intent.putExtra(DownloadService.INTENT_NAME, code);
-                        intent.putExtra(DownloadService.INTENT_URL, url);
-                        startService(intent);
+
+                        final String path = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                .getString(SettingsActivity.PREF_PATH, "");
+                        if (!TextUtils.equals(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), path)) {
+                            if (RxPermissions.getInstance(MainActivity.this).isRevoked(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                Log.e("TAG", getString(R.string.no_storage_permission));
+                                onFailure(call, new Exception(getString(R.string.no_storage_permission)));
+                                return;
+                            }
+                        }
+                        SaveImage.saveImg(MainActivity.this, code + ".jpg", path, url);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        String msg;
+                        if (t == null || TextUtils.isEmpty(t.getMessage())) {
+                            msg = getString(R.string.unknown_error);
+                        } else {
+                            msg = t.getMessage();
+                        }
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 });
-//        Observable.just(null)
-//                .compose(RxPermissions.getInstance(this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-//                .flatMap(new Func1<Boolean, Observable<String>>() {
-//                    @Override
-//                    public Observable<String> call(Boolean aBoolean) {
-//                        if (aBoolean) {
-//                            return Api.loadHtml(code);
-//                        } else {
-//                            Toast.makeText(MainActivity.this, R.string.no_storage_permission, Toast.LENGTH_LONG).show();
-//                            finish();
-//                            return null;
-//                        }
-//                    }
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<String>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        finish();
-//                        unsubscribe();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                        finish();
-//                        unsubscribe();
-//                    }
-//
-//                    @Override
-//                    public void onNext(String s) {
-//                        if (TextUtils.isEmpty(s)) {
-//                            onError(new Exception(getString(R.string.get_html_null)));
-//                        }
-//                        String url = ContenParser.parser(s);
-//                        if (TextUtils.isEmpty(url)) {
-//                            onError(new Exception(getString(R.string.parser_html_null)));
-//                        }
-//                        Intent intent = new Intent(MainActivity.this, DownloadService.class);
-//                        intent.putExtra(DownloadService.INTENT_NAME, code);
-//                        intent.putExtra(DownloadService.INTENT_URL, url);
-//                        startService(intent);
-//                    }
-//                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

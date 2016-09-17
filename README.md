@@ -1,10 +1,10 @@
 # 500px downloader
-保存500px图片的android小app
+保存500px图片的android小app  
+Save images in 500px
 
 
 ##Download
-V 1.1.0  
-[下载地址](app/app-release.apk)  
+[V 1.1.1](app/app-release.apk)  
 
 
 ##ScreenShot
@@ -12,16 +12,22 @@ V 1.1.0
 
 
 ##ChangeLog
+v1.1.1  
+* 所有下载行为全部采用系统下载器下载
+* change to system download manager actions for all downloads 
+
 v1.1.0  
+* 添加设置activity
 * add settingActivity
-* if bugs occurs with this version, try to roll back to previous version(v1.0.1) =.=  
 
 v1.0.1  
 * 支持浏览器内分享链接以保存图片
+* support share link from browser (500px link)
 
 
 ##Discription:
 在500px客户端把图片分享到app，或者浏览器内分享500px的链接至app，就能保存图片到本地啦。  
+share from 500px client or 500px link in browser to this app and everything done.
 
 ##About Me
 [![facebook]](https://www.facebook.com/profile.php?id=100008406013865)  

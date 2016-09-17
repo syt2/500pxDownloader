@@ -1,28 +1,16 @@
 <resources>
     <string name="app_name">500px downloader</string>
     <string name="parsing_url">Parsing url...</string>
-    <string name="save_img_done">Save image done</string>
-    <string name="cannot_download_img">Can not download image</string>
     <string name="invalid_url">Invalid 500px url</string>
     <string name="no_storage_permission">miss storage permission</string>
     <string name="get_html_null">Get html error</string>
     <string name="parser_html_null">Parser html error</string>
     <string name="title_activity_settings">Settings</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="retry">Retry</string>
     <string name="download_in_cache">Miss storage permission, images will save in cache file</string>
     <string name="load_dir_error">Load file error</string>
     <string name="path_msg">Device above 5.0 may fail to save into external sdcard
         , if it occurs, change this directory to internal storage.</string>
-
-    <string-array name="pref_notification_titles">
-        <item>Toast</item>
-        <item>notification</item>
-        <item>full screen notification</item>
-    </string-array>
-    <string-array name="pref_notification_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
+    <string name="settings_download">Download</string>
+    <string name="settings_custom_downloadpath">Custom download file path</string>
 </resources>
