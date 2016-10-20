@@ -14,4 +14,8 @@
     <string name="settings_download">下载</string>
     <string name="settings_custom_downloadpath">自定义下载路径</string>
     <string name="download_from_mirror">从国内镜像下载</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确认</string>
+    <string name="download_manager_disabled_title">下载管理器被禁用</string>
+    <string name="download_manager_disabled_content">点击以启用下载管理器</string>
 </resources>

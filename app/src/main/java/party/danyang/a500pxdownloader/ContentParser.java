@@ -10,8 +10,8 @@ import org.jsoup.select.Elements;
 /**
  * Created by dream on 16-8-19.
  */
-public class ContenParser {
-    public static String parser(String html) {
+public class ContentParser {
+    public static String parser(final String html) {
         if (TextUtils.isEmpty(html)) return null;
         Document doc = Jsoup.parse(html);
         Elements metas = doc.select("meta");

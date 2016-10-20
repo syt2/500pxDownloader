@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
 
@@ -23,14 +22,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.dialog_progress);
 
         initDatas();
     }
 
     private void initDatas() {
         String originUrl = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-        if (!originUrl.startsWith(ORIGIN_URL_PREFIX)) {
+
+        if (TextUtils.isEmpty(originUrl) || !originUrl.startsWith(ORIGIN_URL_PREFIX)) {
             Toast.makeText(this, R.string.invalid_url, Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -40,52 +40,54 @@ public class MainActivity extends Activity {
 
     private void getUrl(final String code) {
         Api.loadHtml(code)
-                .enqueue(new Callback<String>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<String>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response == null || TextUtils.isEmpty(response.body())) {
-                            onFailure(call, new Exception(getString(R.string.get_html_null)));
-                            return;
+                    public void onCompleted() {
+                        unsubscribe();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        String msg;
+                        if (e == null || TextUtils.isEmpty(e.getMessage())) {
+                            msg = getString(R.string.unknown_error);
+                        } else {
+                            msg = e.getMessage();
                         }
-                        String url = ContenParser.parser(response.body());
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                        unsubscribe();
+                        finish();
+                    }
+
+                    @Override
+                    public void onNext(String html) {
+                        if (TextUtils.isEmpty(html)) {
+                            onError(new Exception(getString(R.string.get_html_null)));
+                        }
+                        String url = ContentParser.parser(html);
                         if (TextUtils.isEmpty(url)) {
-                            onFailure(call, new Exception(getString(R.string.parser_html_null)));
-                            return;
+                            onError(new Exception(getString(R.string.parser_html_null)));
                         }
+
                         if (PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                                 .getBoolean(SettingsActivity.PREF_DOWNLOAD_FROM_MIRROR, false)) {
                             url = url.replace("https://drscdn.500px.org/photo/", "http://odn6f51j0.qnssl.com/");
                         }
-
                         final String path = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                                 .getString(SettingsActivity.PREF_PATH, "");
                         if (!TextUtils.equals(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), path)) {
                             if (RxPermissions.getInstance(MainActivity.this).isRevoked(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                Log.e("TAG", getString(R.string.no_storage_permission));
-                                onFailure(call, new Exception(getString(R.string.no_storage_permission)));
-                                return;
+                                onError(new Exception(getString(R.string.no_storage_permission)));
                             }
                         }
-                        SaveImage.saveImg(MainActivity.this, code + ".jpg", path, url);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        String msg;
-                        if (t == null || TextUtils.isEmpty(t.getMessage())) {
-                            msg = getString(R.string.unknown_error);
-                        } else {
-                            msg = t.getMessage();
+                        if (DownloadMangerResolver.resolve(MainActivity.this)) {
+                            SaveImage.saveImg(MainActivity.this, code + ".jpg", path, url);
                         }
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-                        finish();
                     }
                 });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

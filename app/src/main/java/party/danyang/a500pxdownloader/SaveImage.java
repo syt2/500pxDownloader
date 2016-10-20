@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by dream on 16-9-17.
  */
-public class SaveImage {
+public final class SaveImage {
 
     public static long saveImg(Context context, String name, String path, String url) {
         File dir = new File(path);
@@ -25,7 +25,7 @@ public class SaveImage {
         request.setTitle(name);
         request.setDescription(file.getAbsolutePath());
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setMimeType("image/");
+        request.setMimeType("image/jpeg");
         request.allowScanningByMediaScanner();
         return downloadManager.enqueue(request);
     }
