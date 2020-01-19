@@ -28,5 +28,5 @@ v1.0.1
 * 支持浏览器内分享链接以保存图片
 
 
-## Discription:
+## Description:
 在500px客户端把图片分享到app，或者浏览器内分享500px的链接至app即可  
